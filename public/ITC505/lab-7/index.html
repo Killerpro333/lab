@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mad Lib Adventure</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to the Mad Lib Adventure!</h1>
+    <form id="madLibForm" action="/ITC505/lab-7/index.html" method="POST">
+      <label for="name">Enter a Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="adjective">Enter an Adjective:</label>
+      <input type="text" id="adjective" name="adjective" required>
+
+      <label for="noun">Enter a Noun:</label>
+      <input type="text" id="noun" name="noun" required>
+
+      <label for="verb">Enter a Verb:</label>
+      <input type="text" id="verb" name="verb" required>
+
+      <label for="place">Enter a Place:</label>
+      <input type="text" id="place" name="place" required>
+
+      <button type="submit">Submit</button>
+    </form>
+    <div id="storyOutput"></div>
+  </div>
+  <script>
+    document.getElementById('madLibForm').addEventListener('submit', async function (e) {
+      e.preventDefault(); // Prevent page reload
+      const formData = new FormData(e.target);
+      const response = await fetch('/submit', {
+        method: 'POST',
+        body: new URLSearchParams(formData),
+      });
+      const story = await response.text();
+      const storyOutput = document.getElementById('storyOutput');
+      storyOutput.innerHTML = story;
+      storyOutput.style.display = 'block';
+      storyOutput.style.opacity = 0;
+      setTimeout(() => (storyOutput.style.opacity = 1), 200);
+    });
+  </script>
+  
+  <footer>
+    <p>Last updated: <span id="lastModified"></span></p>
+  </footer>
+  <script>
+    var x = document.lastModified;
+    document.getElementById('lastModified').textContent = x;
+  </script>
+</body>
+</html>
